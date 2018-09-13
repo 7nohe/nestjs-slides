@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+    <meta charset="utf-8">
+
+<title>Sever-side application development using TypeScript</title>
+
+<meta name="description" content="">
+<meta name="author" content="daiki7nohe">
+<meta name="generator" content="reveal-ck 3.8.0">
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+<link rel="stylesheet" href="css/reveal.css">
+<link rel="stylesheet" href="css/theme/night.css" id="theme">
+
+<!-- Code syntax highlighting -->
+<link rel="stylesheet" href="lib/css/zenburn.css">
+
+<link rel="stylesheet" href="css/reveal-ck.css">
+
+
+<!-- Printing and PDF exports -->
+<script>
+  var link = document.createElement( 'link' );
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+  document.getElementsByTagName( 'head' )[0].appendChild( link );
+</script>
+
+<!--[if lt IE 9]>
+<script src="lib/js/html5shiv.js"></script>
+<![endif]-->
+
+  </head>
+
+  <body>
+    <div class="reveal">
+  <!-- Any section element inside of this container is displayed as a slide -->
+  <div class="slides">
+    <section>
+
+<h3>TypeScriptで作るサーバーサイドアプリケーション</h3>
+
+<p>株式会社Fusic</p>
+
+<p>Urata Daiki</p>
+
+<p>Twitter: <a href="https://twitter.com/daiki7nohe">@daiki7nohe</a></p>
+
+<p>GitHub: <a href="https://github.com/7nohe" class="user-mention">@7nohe</a></p>
+
+</section>
+<section>
+
+<h3>なぜサーバーサイドをTypeScriptでやるのか？</h3>
+
+</section>
+<section>
+
+<ul>
+  <li>型がほしい</li>
+  <li>最近のフロントエンドの流れに合わせたい
+    <ul>
+      <li>Vue + TypeScript</li>
+      <li>Angular</li>
+    </ul>
+  </li>
+</ul>
+
+</section>
+<section>
+
+<h3>TypeScriptでサーバーサイドがかける良いフレームワークないか？</h3>
+
+</section>
+<section>
+
+<h3>Nest.js</h3>
+
+<style> 
+    img {
+     height: 400px;   
+    }
+</style>
+
+<p><img src="./images/nest-logo.svg" alt="Nest"></p>
+
+<p><a href="https://nestjs.com">https://nestjs.com</a></p>
+
+</section>
+<section>
+
+<blockquote>
+  <p>A progressive Node.js framework for building efficient and scalable server-side applications on top of TypeScript &amp; JavaScript (ES6, ES7, ES8) heavily inspired by Angular 😻🚀</p>
+</blockquote>
+
+<p><span style="font-size: 18px;"> <a href="https://github.com/nestjs/nest">https://github.com/nestjs/nest</a></span></p>
+
+<h3>Angularに強く影響受けた</h3>
+
+</section>
+<section>
+
+<h3>特徴</h3>
+
+<ul>
+  <li>
+    <p>TypeScript</p>
+  </li>
+  <li>DIデザインパターン</li>
+  <li>Nest CLI</li>
+  <li>Express, Fastifyサーバーで動く</li>
+</ul>
+
+</section>
+<section>
+
+<h3>Angular</h3>
+
+<pre><code class="language-typescript">import { Injectable } from '@angular/core';
+import { HEROES }     from './mock-heroes';
+import { Logger }     from '../logger.service';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class HeroService {
+
+  constructor(private logger: Logger) {  }
+
+  getHeroes() {
+    this.logger.log('Getting heroes ...');
+    return HEROES;
+  }
+}
+</code></pre>
+
+</section>
+<section>
+
+<h3>Nest</h3>
+
+<pre><code class="language-typescript">import { Injectable, Inject } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Photo } from './photo.entity';
+
+@Injectable()
+export class PhotoService {
+  constructor(
+    @InjectRepository(Photo)
+    private readonly photoRepository: Repository&lt;Photo&gt;,
+  ) {}
+
+  async findAll(): Promise&lt;Photo[]&gt; {
+    return await this.photoRepository.find();
+  }
+}
+</code></pre>
+
+</section>
+<section>
+
+<h3>いろいろできる 😄</h3>
+
+<ul>
+  <li>
+    <p>GraphQL</p>
+  </li>
+  <li>
+    <p>WebSocket</p>
+  </li>
+  <li>
+    <p>Microservices (Redis, MQTT, gRPCなど)</p>
+  </li>
+  <li>
+    <p>MVCパターン (hbsテンプレート)</p>
+  </li>
+</ul>
+
+</section>
+<section>
+
+<h3>ただ覚えることも多い 😅</h3>
+
+<ul>
+  <li>Controllers</li>
+  <li>Providers</li>
+  <li>Modules</li>
+  <li>Middleware</li>
+  <li>Exception filters</li>
+  <li>Pipes</li>
+  <li>Guards</li>
+  <li>Interceptors</li>
+  <li>Custom decorators</li>
+</ul>
+
+</section>
+<section>
+
+<h3>Database</h3>
+
+<ul>
+  <li>
+    <p>RDB(MySQL, PostgreSQL): TypeORM</p>
+  </li>
+  <li>
+    <p>MongoDB: Mongoose</p>
+  </li>
+</ul>
+
+</section>
+<section>
+
+<h3>DB Connection (TypeORM)</h3>
+
+<pre><code class="language-typescript">// database.provider.ts
+import { createConnection } from 'typeorm';
+
+export const databaseProviders = [
+    {
+        provide: 'DbConnectionToken',
+        useFactory: async () =&gt; await createConnection({
+            type: 'mysql',
+            host: 'myhost',
+            port: 3306,
+            username: 'root',
+            password: 'root',
+            database: 'root',
+            entities: [
+                __dirname + '/../**/*.entity{.ts,.js}',
+            ],
+            synchronize: true,
+        }),
+    },
+];
+
+</code></pre>
+
+</section>
+<section>
+
+<h3>Entity (TypeORM)</h3>
+
+<pre><code class="language-typescript">// todo.entity.ts
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity()
+export class Todo {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ length: 500 })
+  title: string;
+
+  @Column('text')
+  description: string;
+
+  @Column()
+  archive: boolean;
+}
+
+</code></pre>
+
+</section>
+<section>
+
+<h3>Nest CLI</h3>
+
+<pre><code class="language-bash">$ nest generate service users
+# OR
+$ nest g s users
+</code></pre>
+
+</section>
+<section>
+
+<ul>
+  <li>class (alias: cl)</li>
+  <li>controller (alias: co)</li>
+  <li>decorator (alias: d)</li>
+  <li>exception (alias: e)</li>
+  <li>filter (alias: f)</li>
+  <li>gateway (alias: ga)</li>
+  <li>guard (alias: gu)</li>
+  <li>interceptor (alias: i)</li>
+  <li>middleware (alias: mi)</li>
+  <li>module (alias: mo)</li>
+  <li>pipe (alias: pi)</li>
+  <li>provider (alias: pr)</li>
+  <li>service (alias: s)</li>
+</ul>
+
+</section>
+<section>
+
+<h3>Docker Image🐳</h3>
+
+<pre><code class="language-bash">$ docker pull nestjs/cli:5.3.0
+</code></pre>
+
+</section>
+<section>
+
+<h3>まとめ</h3>
+
+<ul>
+  <li>
+    <p>TypeScriptで型のある開発ができる</p>
+  </li>
+  <li>
+    <p>Angularライクに書ける (DIパターン, CLI)</p>
+  </li>
+  <li>
+    <p>学習コストが高い (Angularをやってれば低い？)</p>
+  </li>
+  <li>
+    <p>まだまだ情報がない</p>
+  </li>
+  <li>
+    <p>Expressで動くので、そのままAngular UniversalでSSRできそう</p>
+  </li>
+</ul>
+
+</section>
+<section>
+
+<h3>Thank you 🙇</h3>
+
+</section>
+
+  </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+
+<script>
+  (function() {
+  function extend( a, b ) {
+    for(var i in b) {
+      a[i] = b[i];
+    }
+  }
+  var baseOptions = {
+    transition: 'convex',
+
+    dependencies: [
+      { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'plugin/zoom-js/zoom.js', async: true },
+      { src: 'plugin/notes/notes.js', async: true }
+    ]
+  };
+
+  
+
+  var configOptions = {"controls":true,"progress":true,"history":true,"center":true}
+  var initializeOptions = {};
+  extend(initializeOptions, baseOptions);
+  extend(initializeOptions, configOptions);
+  Reveal.initialize(initializeOptions);
+})();
+
+</script>
+
+  </body>
+</html>
